@@ -1,3 +1,12 @@
+@font-face {
+  font-family: 'Unbounded';
+  src: url('/fonts/Unbounded/Unbounded-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900; /* Variable font weight range */
+  font-style: normal;
+  font-display: swap;
+}
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -21,4 +30,10 @@ body {
 #root {
   width: 100%;
   min-height: 100vh;
+}
+
+@layer base {
+  html {
+    font-family: 'Unbounded', sans-serif;
+  }
 }

@@ -1,11 +1,18 @@
-function App() {  
+import { Button } from "@components";
+
+function App() {
   return (
     <>
-      <div className="p-4">
-        <div className="bg-red-500 text-white p-4 rounded-lg">
-          If this is red with rounded corners, Tailwind works!
-        </div>
-      </div>
+      <Button
+        variant="moba6an"
+        size="small"
+        disabled={false}
+        onCLick={() => console.log("Clicked")}
+        onHover={() => console.log("Hovered")}
+        className="custom-class"
+      >
+        Sign up
+      </Button>
     </>
   );
 }

@@ -29,7 +29,8 @@
     "paths": {
       "@/*": ["src/*"],
       "@types": ["src/types/index"],
-      "@types/*": ["src/types/*"]
+      "@types/*": ["src/types/*"],
+      "@components": ["src/Components/index"],
     }
   },
   "include": ["src"]
