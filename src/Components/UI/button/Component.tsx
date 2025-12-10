@@ -10,10 +10,10 @@ export const Button = ({
   onHover,
   className,
 }: ButtonProps) => {
-  const baseButtonClasses: string = "rounded-2xl";
+  const baseButtonClasses: string = "rounded-2xl ";
 
   const buttonVariants = {
-    mo9a3ar: "bg-white border-[2.5px] border-[#DCA934]  text-[#DCA934]", // will remove the shadow later just for testing now and add it only to the sign up button
+    mo9a3ar: "border-[2.5px] border-[#DCA934]  text-[#DCA934]", // will remove the shadow later just for testing now and add it only to the sign up button
     moba6an:
       "bg-[#DCA934] text-white shadow-[0_4px_4px_rgba(0,0,0,0.25)] border-none",
     mo9a3arWhite: " text-white border-[2.5px] border-white",

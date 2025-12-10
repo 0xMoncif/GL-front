@@ -4,7 +4,6 @@ function App() {
   return (
     <>
       <LandingPage />
-      <div>hello world</div>
     </>
   );
 }
