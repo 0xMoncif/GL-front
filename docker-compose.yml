@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+  frontend:
+    build: .
+    container_name: react_dev
+    ports:
+      - "5173:5173"  # Map host 5173 to container 5173
+    volumes:
+      - .:/app  # Mount code for hot reload
+      - /app/node_modules  # Keep container's node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true  # Enable file watching in Docker
