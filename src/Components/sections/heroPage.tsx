@@ -3,8 +3,8 @@ import HeroPic from "@/assets/heroPic.png";
 
 export const HeroPage = () => {
 
-    const BaseTextClasses = "font-[300] text-[1.75rem] text-white";
-    const HeaderTextClasses = 'text-[5.75rem] font-[800] text-white leading-[1.1]';
+    const BaseTextClasses = "font-[300] text-[1.25rem] text-white ";
+    const HeaderTextClasses = 'text-[4rem] font-[800] text-white leading-[8.13rem]';
     
     return (
         <section className="relative min-h-screen overflow-hidden">
@@ -24,8 +24,8 @@ export const HeroPage = () => {
             
             
             <div className="relative z-20 flex flex-col justify-center min-h-screen">
-                <div className="container mx-auto px-4 pt-[6.25rem]"> 
-                    <div className="max-w-[56.25rem] pl-[2.313rem]"> 
+                <div className="container mx-auto px-4 "> 
+                    <div className="max-w-[56.25rem] pl-[4.713rem]"> 
                         <h2 className={`${HeaderTextClasses} mb-4`}>
                             <span className="text-[#DCA934]">Votre </span>
                             <span>Avenir</span>
@@ -34,8 +34,8 @@ export const HeroPage = () => {
                             <span>Commence Ici</span>
                         </h2>
                         
-                        <div className="w-full max-w-[56.25rem]">
-                            <p className={`${BaseTextClasses} leading-relaxed`}>
+                        <div className="w-[37rem] ">
+                            <p className={`${BaseTextClasses} leading-[1.88rem]`}>
                                 <span className="text-[#DCA934]">DZ-Stagiaire </span> 
                                 connecte étudiants, jeunes diplômés et entreprises grâce à une plateforme fiable, moderne et conçue pour faciliter l’accès aux opportunités de stage en Algérie.
                             </p>
