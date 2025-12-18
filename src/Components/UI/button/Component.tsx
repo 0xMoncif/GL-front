@@ -21,7 +21,7 @@ export const Button = ({
 
   const buttonSizes = {
     small:
-      "w-[133px] h-[54px] text-[18px] font-[500] hover:-translate-y-1.5 hover:shadow-[0_8px_4px_rgba(0,0,0,0.25)] transition-all duration-300 ease-in-out",
+      "w-[8.315rem] h-[3.38rem] text-[1.13rem] font-[500] hover:-translate-y-1.5 hover:shadow-[0_8px_4px_rgba(0,0,0,0.25)] transition-all duration-300 ease-in-out",
     medium: "w-[349px] h-[72px] text-[20px] font-[700]",
     large: "w-[455px] h-[70px] text-[24px] font-[800]",
   };
