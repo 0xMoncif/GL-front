@@ -3,7 +3,9 @@ import { LandingPage } from "@components";
 function App() {
   return (
     <>
+    <div className="font-unbounded">
       <LandingPage />
+    </div>
     </>
   );
 }

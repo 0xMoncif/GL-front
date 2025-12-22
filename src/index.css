@@ -31,9 +31,3 @@ body {
   width: 100%;
   min-height: 100vh;
 }
-
-@layer base {
-  html {
-    font-family: 'Unbounded', sans-serif;
-  }
-}

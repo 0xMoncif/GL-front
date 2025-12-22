@@ -5,6 +5,7 @@ export default {
     extend: {
       fontFamily: {
         'unbounded': ['Unbounded', 'sans-serif'], // Add your custom font
+        'red-hat': ['Red Hat Display', 'sans-serif'],
       },
     },
   },
