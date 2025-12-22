@@ -60,9 +60,6 @@ export const Card = ({
             <p className="text-[1.2rem] tracking-[2%] text-black font-red-hat leading-[1.75rem]  ">
              {data.content}
             </p>    
-           
-            
-            
             </div>
         </div>
     )

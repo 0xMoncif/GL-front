@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {Card} from "@components"
-
+import { Button } from "@components";
 
 export const Services = () => {
   const [selected, setSelected] = useState<"entreprise" | "etudiant">("entreprise");
@@ -56,14 +56,25 @@ export const Services = () => {
           </button>
         </div>
       </div>
+
+
        <div className=" mt-[2.5rem] "> 
         <div className="grid grid-cols-2 gap-[2.75rem]">
           <Card variant="orange" />
           <Card variant="purple" />
           <Card variant="cyan" />
           <Card variant="lime" />
-          
         </div>
+      </div>
+
+      <div>
+        <div className="mt-[7.25rem] flex flex-col items-center gap-[3rem]">
+            <Button variant="moba6an" size="medium">
+              Créer un compte 
+            </Button>
+            <span className="text-[1.25rem] font-bold text-[#DCA934] cursor-pointer">Se connecter</span>
+        </div>
+            
       </div>
     </section>
   );

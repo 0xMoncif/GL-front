@@ -15,15 +15,15 @@ export const Button = ({
   const buttonVariants = {
     mo9a3ar: "border-[2.5px] border-[#DCA934]  text-[#DCA934]", // will remove the shadow later just for testing now and add it only to the sign up button
     moba6an:
-      "bg-[#DCA934] text-white shadow-[0_4px_4px_rgba(0,0,0,0.25)] border-none",
+      "bg-[#DCA934] text-white  border-none",
     mo9a3arWhite: " text-white border-[2.5px] border-white",
   };
 
   const buttonSizes = {
     small:
       "w-[8.315rem] h-[3.38rem] text-[1.13rem] font-[500] hover:-translate-y-1.5 hover:shadow-[0_8px_4px_rgba(0,0,0,0.25)] transition-all duration-300 ease-in-out",
-    medium: "w-[349px] h-[72px] text-[20px] font-[700]",
-    large: "w-[455px] h-[70px] text-[24px] font-[800]",
+    medium: "w-[21.81rem] h-[4.5rem] text-[1.25rem] font-[700] hover:-translate-y-1.5 hover:shadow-[0_8px_4px_rgba(0,0,0,0.25)] transition-all duration-300 ease-in-out",
+    large: "w-[28.43rem] h-[4.375rem] text-[1.5rem] font-[800]",
   };
   return (
     <button
