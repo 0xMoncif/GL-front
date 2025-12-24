@@ -68,7 +68,7 @@ export const Services = () => {
       </div>
 
       <div>
-        <div className="mt-[7.25rem] flex flex-col items-center gap-[3rem]">
+        <div className="mt-[7.25rem] mb-[8.75rem] flex flex-col items-center gap-[3rem]">
             <Button variant="moba6an" size="medium">
               Créer un compte 
             </Button>
