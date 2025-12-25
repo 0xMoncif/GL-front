@@ -1,11 +1,17 @@
-import { LandingPage } from "@components";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { LandingPage , SignUpPage} from "@components";
 // test
 function App() {
   return (
     <>
-    <div className="font-unbounded">
-      <LandingPage />
-    </div>
+      <Router>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/Sign-up" element={<SignUpPage />} />
+        </Routes>
+      </Router>
+      
+    
     </>
   );
 }

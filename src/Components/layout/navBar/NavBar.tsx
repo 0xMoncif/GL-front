@@ -1,9 +1,14 @@
 import { useState } from "react";
 import { Button } from "@components";
+import { Link, useNavigate } from 'react-router-dom';
 import logo from "@/assets/logo.svg";
+
+
 export const NavBar = () => {
   const [hovered, setHovered] = useState<boolean>(false);
 
+
+  const navigate = useNavigate()
   const LogoTextClasses = "font-[800] text-[1.5rem]";
   const BaseTextClasses = "font-[700] text-[1.25rem] cursor-pointer";
 
@@ -40,7 +45,7 @@ export const NavBar = () => {
         <Button variant="mo9a3ar" size="small" disabled={false}>
           Log in
         </Button>
-        <Button variant="moba6an" size="small" disabled={false} className="shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
+        <Button variant="moba6an" size="small" onCLick={()=>navigate('/Sign-up') } disabled={false} className="shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
           Sign Up
         </Button>
       </div>

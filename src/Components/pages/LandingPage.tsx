@@ -5,9 +5,11 @@ import { Footer } from '../sections/footer'
 export const LandingPage = () => {
     return (
         <>
+        <div className="font-unbounded">
             <HeroPage />
             <Services />
             <Footer />
+        </div>
         </>
     )
 }
