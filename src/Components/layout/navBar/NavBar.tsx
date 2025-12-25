@@ -41,7 +41,7 @@ export const NavBar = () => {
           Log in
         </Button>
         <Button variant="moba6an" size="small" disabled={false} className="shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
-          Log in
+          Sign Up
         </Button>
       </div>
     </nav>
