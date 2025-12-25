@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@components";
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import logo from "@/assets/logo.svg";
 
 
