@@ -57,18 +57,20 @@ export const SignUpPage = () => {
             Bienvenue sur DZ-Stagiaire!
           </h1>
           <p className={classes.headerSubtitle}>
-            Quel est votre objectif ici?
+            Quel est votre objectif ici ?
           </p>
         </header>
 
         {/* Cards section */}
         <div className={classes.cardsContainer}>
+            
           {cardsData.map((card) => (
             <div
               key={card.id}
               className={`${classes.card} ${classes.cardHover}`}
               onClick={() => console.log(`Selected: ${card.title}`)}
             >
+                
               <div className={classes.cardHeader}>
                 <h3 className={classes.cardHeaderTitle}>{card.title}</h3>
               </div>
