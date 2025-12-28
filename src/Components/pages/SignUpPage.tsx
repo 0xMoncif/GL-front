@@ -1,3 +1,4 @@
+import { SignUpHeader } from "../sections/signUpHeader";
 import logo from "@/assets/logo.svg";
 import student from "@assets/student.png";
 import employer from "@assets/employer.png";
@@ -63,24 +64,7 @@ export const SignUpPage = () => {
 
   return (
     <div className={classes.container}>
-      {/* Logo in top left */}
-      <div className={classes.logoContainer}>
-        <img src={logo} alt="Logo" className="w-[2.44rem] h-[3.13rem]" />
-        <div className={classes.logoText}>
-          DZ <span className="text-[#DCA934] font-semibold">Stagiaire</span>
-        </div>
-      </div>
-
-      {/* Return link - separate from header */}
-      <div className={classes.returnContainer}>
-        <div 
-          className={classes.returnLink}
-          onClick={() => navigate('/')}
-        >
-          <span className={classes.returnArrow}>←</span>
-          <span>Retour</span>
-        </div>
-      </div>
+      <SignUpHeader />
 
       {/* Main content */}
       <main className="">
