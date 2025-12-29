@@ -1,0 +1,159 @@
+import { createContext, useContext, useState } from 'react';
+import type { ReactNode } from 'react';
+
+interface RegistrationData {
+  // Phase 1: Account Creation
+  email: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  password: string;
+  schoolId: string;
+  
+  // Phase 2: Profile Configuration
+  profileData?: {
+    // i will add this later
+    bio?: string;
+  };
+}
+
+interface RegistrationContextType {
+  // Current state
+  currentPhase: 'account' | 'profile';
+  currentStep: number;
+  
+  // Data
+  registrationData: RegistrationData;
+  
+  // Navigation
+  goToNextStep: () => void;
+  goToPrevStep: () => void;
+  goToStep: (phase: 'account' | 'profile', step: number) => void;
+  goToPhase: (phase: 'account' | 'profile') => void;
+  
+  // Data management
+  updateData: (data: Partial<RegistrationData>) => void;
+  submitRegistration: () => Promise<void>;
+  
+  // Progress info
+  getPhaseProgress: (phase: 'account' | 'profile') => {
+    currentStep: number;
+    totalSteps: number;
+    percentage: number;
+  };
+}
+
+const RegistrationContext = createContext<RegistrationContextType | undefined>(undefined);
+
+// Configuration
+const PHASE_CONFIG = {
+  account: {
+    totalSteps: 3,
+    title: 'Création du compte',
+  },
+  profile: {
+    totalSteps: 3, // Change this based on your needs
+    title: 'Configuration du profil',
+  },
+};
+
+interface RegistrationProviderProps {
+  children: ReactNode;
+}
+
+export const RegistrationProvider = ({ children }: RegistrationProviderProps) => {
+  const [currentPhase, setCurrentPhase] = useState<'account' | 'profile'>('account');
+  const [currentStep, setCurrentStep] = useState(1);
+  const [registrationData, setRegistrationData] = useState<RegistrationData>({
+    email: '',
+    firstName: '',
+    lastName: '',
+    phone: '',
+    password: '',
+    schoolId: '',
+  });
+
+  const getCurrentPhaseConfig = () => PHASE_CONFIG[currentPhase];
+  const getTotalSteps = () => getCurrentPhaseConfig().totalSteps;
+
+  const goToNextStep = () => {
+    if (currentStep < getTotalSteps()) {
+      setCurrentStep(prev => prev + 1);
+    } else if (currentPhase === 'account') {
+      // Move to profile phase
+      setCurrentPhase('profile');
+      setCurrentStep(1);
+    }
+    // Else: already at last step of profile phase
+  };
+
+  const goToPrevStep = () => {
+    if (currentStep > 1) {
+      setCurrentStep(prev => prev - 1);
+    } else if (currentPhase === 'profile') {
+      // Go back to account phase
+      setCurrentPhase('account');
+      setCurrentStep(PHASE_CONFIG.account.totalSteps);
+    }
+  };
+
+  const goToStep = (phase: 'account' | 'profile', step: number) => {
+    setCurrentPhase(phase);
+    setCurrentStep(Math.max(1, Math.min(step, PHASE_CONFIG[phase].totalSteps)));
+  };
+
+  const goToPhase = (phase: 'account' | 'profile') => {
+    setCurrentPhase(phase);
+    setCurrentStep(1);
+  };
+
+  const updateData = (data: Partial<RegistrationData>) => {
+    setRegistrationData(prev => ({ ...prev, ...data }));
+  };
+
+  const submitRegistration = async () => {
+    console.log('Submitting registration:', registrationData);
+    // API call here
+    // await api.register(registrationData);
+  };
+
+  const getPhaseProgress = (phase: 'account' | 'profile') => {
+    const config = PHASE_CONFIG[phase];
+    const isCurrentPhase = phase === currentPhase;
+    
+    return {
+      currentStep: isCurrentPhase ? currentStep : (phase === 'account' ? config.totalSteps : 0),
+      totalSteps: config.totalSteps,
+      percentage: isCurrentPhase 
+        ? ((currentStep - 1) / (config.totalSteps - 1)) * 100
+        : phase === 'account' ? 100 : 0,
+    };
+  };
+
+  return (
+    <RegistrationContext.Provider
+      value={{
+        currentPhase,
+        currentStep,
+        registrationData,
+        goToNextStep,
+        goToPrevStep,
+        goToStep,
+        goToPhase,
+        updateData,
+        submitRegistration,
+        getPhaseProgress,
+      }}
+    >
+      {children}
+    </RegistrationContext.Provider>
+  );
+};
+
+export const useRegistration = () => {
+  const context = useContext(RegistrationContext);
+  if (!context) {
+    throw new Error('useRegistration must be used within a RegistrationProvider');
+  }
+  return context;
+};

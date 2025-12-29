@@ -1,7 +1,7 @@
 import { SignUpHeader } from "../sections/signUpHeader"
 import { Button } from "@components";
 import { ProgressBar } from "../layout/progressBar";
-import { useStep } from "../../contexts/StepContext";
+import { useRegistration } from "../../contexts/RegistrationContext";
 
 const baseInputClass = 'pl-[1.875rem] bg-[#F9F7F3] bg-opacity-[1%] rounded-[1.25rem] border-[1px] border-[#1F1F1F] border-opacity-[10%]'
 
@@ -28,25 +28,19 @@ const classes = {
 
 export const CreateAcconut = ()=>{
 
-    const { goToNextStep, currentStep, totalSteps } = useStep();
+    
+    const { goToNextStep, currentPhase, currentStep } = useRegistration();
 
-     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         
-        // Get form data
+        // Just log and go to next step
         const formData = new FormData(e.currentTarget);
-        const data = Object.fromEntries(formData.entries());
-        console.log("Form Data:", data);
+        console.log("Data:", Object.fromEntries(formData.entries()));
         
-        // Just increase step to see animation
-        goToNextStep();
+        goToNextStep(); // This will animate the progress bar
         
-        // Optional: Reset when at last step
-        if (currentStep === totalSteps) {
-            console.log("Reached last step, but continuing to test animation");
-            // You could reset here if you want:
-            // goToStep(1);
-        }
+        console.log("Phase:", currentPhase, "Step:", currentStep);
     };
 
     return (
@@ -78,8 +72,8 @@ export const CreateAcconut = ()=>{
                     </form>
                 </div>
                 <div className="flex justify-center gap-[1.25rem] mt-[5.25rem]">
-                    <ProgressBar content="Informations personnelles" />
-                    <ProgressBar content="Informations personnelles" />
+                    <ProgressBar content="Informations personnelles" phase="account" />
+                    <ProgressBar content="Configurer votre profil" phase="profile" />
                 </div>
             </main>
 

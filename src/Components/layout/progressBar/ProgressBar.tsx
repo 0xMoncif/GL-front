@@ -1,16 +1,14 @@
-// components/ProgressBar.tsx
-import { useStep } from '../../../contexts/StepContext';
+import { useRegistration } from '../../../contexts/RegistrationContext';
 
 interface ProgressBarProp {
     content : string;
+     phase: 'account' | 'profile';
 }
 
 
-export const ProgressBar = ({content} : ProgressBarProp) => {
-  const { currentStep, totalSteps } = useStep();
-  
-  // Calculate fill percentage (0 to 100)
-  const fillPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+export const ProgressBar = ({content ,phase} : ProgressBarProp) => {
+   const { getPhaseProgress } = useRegistration();
+  const progress = getPhaseProgress(phase);
   
   return (
     <div className="flex flex-col  items-start gap-[0.6125rem]">
@@ -22,7 +20,7 @@ export const ProgressBar = ({content} : ProgressBarProp) => {
       <div className="w-[18.75rem] h-[0.31rem] bg-[#1F1F1F] bg-opacity-[20%] rounded-full overflow-hidden">
         <div 
           className="h-full bg-[#DCA934] transition-all duration-300 ease-out rounded-full"
-          style={{ width: `${fillPercentage}%` }}
+          style={{ width: `${progress.percentage}%` }}
         />
       </div>
     </div>
