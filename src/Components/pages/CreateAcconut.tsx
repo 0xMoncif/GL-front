@@ -77,7 +77,10 @@ export const CreateAcconut = ()=>{
                         </Button>
                     </form>
                 </div>
-                <ProgressBar content="Informations personnelles" />
+                <div className="flex justify-center gap-[1.25rem] mt-[5.25rem]">
+                    <ProgressBar content="Informations personnelles" />
+                    <ProgressBar content="Informations personnelles" />
+                </div>
             </main>
 
         </div>

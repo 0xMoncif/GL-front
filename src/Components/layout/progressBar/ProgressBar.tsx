@@ -13,8 +13,8 @@ export const ProgressBar = ({content} : ProgressBarProp) => {
   const fillPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
   
   return (
-    <div className="flex flex-col items-center gap-[1.25rem] mt-[2rem]">
-      <div className="text-[1.25rem] font-red-hat text-[#1F1F1F] font-[600]">
+    <div className="flex flex-col  items-start gap-[0.6125rem]">
+      <div className="text-[1rem] font-red-hat text-[#1F1F1F] text-opacity-[20%] font-meduim">
         {content}
       </div>
       

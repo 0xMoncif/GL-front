@@ -19,7 +19,7 @@ interface StepProviderProps {
   totalSteps?: number;
 }
 
-export const StepProvider = ({ children, totalSteps = 3 }: StepProviderProps) => {
+export const StepProvider = ({ children, totalSteps = 4 }: StepProviderProps) => {
   const [currentStep, setCurrentStep] = useState(1);
 
   const goToNextStep = () => {
