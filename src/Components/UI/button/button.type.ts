@@ -3,11 +3,12 @@ import type {BasePropsWithChildren} from '@types';
 // moba6an button = l3ks 
 type ButtonVariant = 'mo9a3ar' | 'moba6an' | 'mo9a3arWhite';
 type ButtonSize = 'small' | 'medium' | 'large'
-
+type ButtonType = 'button' | 'submit' | 'reset'
 export interface ButtonProps extends BasePropsWithChildren {
-    onCLick?: () => void;
+    onClick?: () => void;
     onHover?: () => void;
     disabled?: boolean;
+    type? : ButtonType;
     variant : ButtonVariant;
     size: ButtonSize; 
 }

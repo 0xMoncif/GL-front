@@ -1,5 +1,10 @@
 import logo from "@/assets/logo.svg";
 import { useNavigate } from "react-router-dom";
+
+interface SignUpHeaderProps {
+  navigationUrl: string;
+}
+
 const classes = {
   logoContainer: "flex items-center gap-[1rem] pt-[1.0625rem] pl-[1.4375rem]",
   logoText: "text-[1rem] font-extrabold ",
@@ -7,12 +12,12 @@ const classes = {
   // Return link styling
   returnContainer: "flex pl-[19rem] mt-[3.3rem]",
   returnLink:
-    "inline-flex items-center gap-2 text-[1rem] text-[#1F1F1F] cursor-pointer font-bold transition-all duration-300 ease-out group",
+    "inline-flex items-center gap-2 text-[1rem] text-[#1F1F1F] text-opacity-[20%] cursor-pointer font-bold transition-all duration-300 ease-out group",
   returnArrow:
     "transition-all duration-300 ease-out group-hover:scale-125 group-hover:mr-2",
 };
 
-export const SignUpHeader = () => {
+export const SignUpHeader = ({navigationUrl} : SignUpHeaderProps) => {
     const navigate = useNavigate()
 
   return (
@@ -25,7 +30,7 @@ export const SignUpHeader = () => {
       </div>
 
       <div className={classes.returnContainer}>
-        <div className={classes.returnLink} onClick={() => navigate("/")}>
+        <div className={classes.returnLink} onClick={() => navigate(navigationUrl)}>
           <span className={classes.returnArrow}>←</span>
           <span>Retour</span>
         </div>

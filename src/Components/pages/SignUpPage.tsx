@@ -1,5 +1,4 @@
 import { SignUpHeader } from "../sections/signUpHeader";
-import logo from "@/assets/logo.svg";
 import student from "@assets/student.png";
 import employer from "@assets/employer.png";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +19,7 @@ const classes = {
 
   // Header section
   headerContainer: "mt-[10.25rem] text-center",
-  headerTitle: "text-[2.5rem] md:text-4xl font-extrabold text-[#DCA934]",
+  headerTitle: "text-[2.5rem]  font-extrabold text-[#DCA934]",
   headerSubtitle:
     "mt-2 text-[1.25rem] text-opacity-[60%] text-black font-red-hat",
 
@@ -50,7 +49,8 @@ export const SignUpPage = () => {
       description:
         "Publier vos offres, gérer les candidatures, et cibler vos annonces.",
       image: employer,
-      imageClasses: `${classes.image} ${classes.EmployerImage} `
+      imageClasses: `${classes.image} ${classes.EmployerImage} `,
+      navigationUrl : '/'
     },
     {
       id: 2,
@@ -58,13 +58,14 @@ export const SignUpPage = () => {
       description:
         "Créer votre CV, rechercher et postuler aux offres, et suivre vos candidatures.",
       image: student,
-      imageClasses: `${classes.image} ${classes.studentImage} `
+      imageClasses: `${classes.image} ${classes.studentImage} `,
+      navigationUrl : '/Create-Account'
     },
   ];
 
   return (
     <div className={classes.container}>
-      <SignUpHeader />
+      <SignUpHeader navigationUrl= '/' />
 
       {/* Main content */}
       <main className="">
@@ -81,7 +82,7 @@ export const SignUpPage = () => {
             <div  key={card.id} className="relative group">
               <div
                 className={`${classes.card} ${classes.cardHover}`}
-                onClick={() => console.log(`Selected: ${card.title}`)}
+                onClick={() => navigate(card.navigationUrl)}
               >
                 <div className={classes.cardHeader}>
                   <h3 className={classes.cardHeaderTitle}>{card.title}</h3>
