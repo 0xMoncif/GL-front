@@ -45,7 +45,7 @@ export const NavBar = () => {
         <Button variant="mo9a3ar" size="small" disabled={false}>
           Log in
         </Button>
-        <Button variant="moba6an" size="small" onCLick={()=>navigate('/Sign-up') } disabled={false} className="shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
+        <Button variant="moba6an" size="small" onClick={()=>navigate('/Sign-up') } disabled={false} className="shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
           Sign Up
         </Button>
       </div>

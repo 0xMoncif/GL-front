@@ -1,5 +1,8 @@
 import { SignUpHeader } from "../sections/signUpHeader"
 import { Button } from "@components";
+import { ProgressBar } from "../layout/progressBar";
+import { useStep } from "../../contexts/StepContext";
+
 const baseInputClass = 'pl-[1.875rem] bg-[#F9F7F3] bg-opacity-[1%] rounded-[1.25rem] border-[1px] border-[#1F1F1F] border-opacity-[10%]'
 
 const classes = {
@@ -21,7 +24,31 @@ const classes = {
     emailInput : `${baseInputClass} w-[28.44rem] h-[4.38rem]`
 }
 
+
+
 export const CreateAcconut = ()=>{
+
+    const { goToNextStep, currentStep, totalSteps } = useStep();
+
+     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        
+        // Get form data
+        const formData = new FormData(e.currentTarget);
+        const data = Object.fromEntries(formData.entries());
+        console.log("Form Data:", data);
+        
+        // Just increase step to see animation
+        goToNextStep();
+        
+        // Optional: Reset when at last step
+        if (currentStep === totalSteps) {
+            console.log("Reached last step, but continuing to test animation");
+            // You could reset here if you want:
+            // goToStep(1);
+        }
+    };
+
     return (
         <div className={classes.container}>
             <SignUpHeader navigationUrl="/Sign-up" />
@@ -33,7 +60,7 @@ export const CreateAcconut = ()=>{
                 </header>
 
                 <div className={classes.formContainer}>
-                    <form className={classes.form}>
+                    <form className={classes.form} onSubmit={handleSubmit} >
                         <div className={classes.nameInputontainer}>
                             <input type="text" name="first-name" required className={classes.nameInput} placeholder="Prénom" style={{ 
                                     color: '#1F1F1F',
@@ -42,12 +69,15 @@ export const CreateAcconut = ()=>{
                                     color: '#1F1F1F',
                                 }} />
                         </div>
-                        <input type="email" name="email" required placeholder="Email" className={classes.emailInput} />
+                        <input type="email" name="email" required placeholder="Email" className={classes.emailInput} style={{ 
+                                    color: '#1F1F1F',
+                                }} />
                         <Button variant="moba6an" size="large" type="submit">
                             Continuer
                         </Button>
                     </form>
                 </div>
+                <ProgressBar content="Informations personnelles" />
             </main>
 
         </div>
