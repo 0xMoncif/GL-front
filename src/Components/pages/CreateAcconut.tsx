@@ -18,7 +18,7 @@ const classes = {
   headerContainer: "text-center mt-[2.2rem]",
   headerTitle: "text-[2.5rem] text-[#DCA934] font-extrabold",
   headerText: "text-[1.25rem] text-opacity-[60%] text-[#1F1F1F] font-red-hat",
-  subHeaderText :"text-[1.5rem] text-[#1F1F1F]" ,
+  subHeaderText: "text-[1.5rem] text-[#1F1F1F]",
 
   //form
   formContainer:
@@ -31,39 +31,68 @@ const classes = {
   phoneNumber: `${baseInputClass} w-[21.06rem]`,
 };
 
+type Domain = string;
+
+type Field = {
+  id: number;
+  field: string;
+  domains: Domain[];
+};
+
+const testData: Field[] = [
+  {
+    id: 1,
+    field: "Développement web",
+    domains: ["front end", "backend", "devops"],
+  },
+  { id: 2, field: "Design", domains: ["UI/UX", "Graphics", "3D"] },
+  { id: 3, field: "multimedia", domains: ["video editing", "scipt writing"] },
+  {
+    id: 4,
+    field: "data analyste",
+    domains: ["databases", "datastuff", "kekw"],
+  },{
+    id: 5,
+    field: "data bababoi",
+    domains: ["databases", "datastuff"],
+  },
+];
+
 export const CreateAcconut = () => {
   const navigate = useNavigate();
-  const { currentPhase, currentStep, registrationData,goToPrevStep } = useRegistration();
+  const { currentPhase, currentStep, registrationData, goToPrevStep } =
+    useRegistration();
   useEffect(() => {
     console.log("🔄 Registration data changed:", registrationData);
   }, [registrationData]);
-  
+
   return (
     <div className={classes.container}>
-      <SignUpHeader onClick={()=>{
-        if(currentStep=== 1 && currentPhase==='account'){
-          navigate("/Sign-up");
-        }
-        else{
-          goToPrevStep();
-        }
-      }}/>
+      <SignUpHeader
+        onClick={() => {
+          if (currentStep === 1 && currentPhase === "account") {
+            navigate("/Sign-up");
+          } else {
+            goToPrevStep();
+          }
+        }}
+      />
 
       <main className={classes.mainContainer}>
-        {currentPhase === 'account' ? <header className={classes.headerContainer}>
-          <h1 className={classes.headerTitle}>Créer un compte</h1>
-          <p className={classes.headerText}>Vos informations personnelles</p>
-        </header> : null}
+        {currentPhase === "account" ? (
+          <header className={classes.headerContainer}>
+            <h1 className={classes.headerTitle}>Créer un compte</h1>
+            <p className={classes.headerText}>Vos informations personnelles</p>
+          </header>
+        ) : null}
 
         <div className={classes.formContainer}>
           {currentPhase === "account" && currentStep === 1 && <AccountStep1 />}
           {currentPhase === "account" && currentStep === 2 && <AccountStep2 />}
           {currentPhase === "account" && currentStep === 3 && <AccountStep3 />}
 
-
           {currentPhase === "profile" && currentStep === 1 && <ProfileStep1 />}
-          {currentPhase === "profile" && currentStep === 2 && <h1 className={classes.headerTitle}>Créer un compte</h1>}
-
+          {currentPhase === "profile" && currentStep === 2 && <ProfileStep2 />}
         </div>
         <div className="flex justify-center gap-[1.25rem] mt-[5.25rem] mb-[2.5rem]">
           <ProgressBar content="Informations personnelles" phase="account" />
@@ -399,22 +428,98 @@ const AccountStep3 = () => {
   );
 };
 
-const ProfileStep1 = ()=>{
-    const { registrationData,goToNextStep } = useRegistration();
+const ProfileStep1 = () => {
+  const { registrationData, goToNextStep } = useRegistration();
   return (
     <div className="flex flex-col gap-[3.75rem] mt-[10rem] text-center">
       <div>
-        <h1 className={`${classes.headerTitle} font-unbounded`}>Bienvenue {registrationData.firstName}!</h1>
-        <p className={`${classes.headerText} font-red-hat`}>Compte créé avec succès</p>
+        <h1 className={`${classes.headerTitle} font-unbounded`}>
+          Bienvenue {registrationData.firstName}!
+        </h1>
+        <p className={`${classes.headerText} font-red-hat`}>
+          Compte créé avec succès
+        </p>
       </div>
       <div className="w-[37.2rem]">
-        <p className={classes.subHeaderText}>Votre compte a été créé avec succès ! Pour commencer à travailler, nous devons configurer votre profil.</p>
+        <p className={classes.subHeaderText}>
+          Votre compte a été créé avec succès ! Pour commencer à travailler,
+          nous devons configurer votre profil.
+        </p>
       </div>
       <div>
-        <Button size="large" variant="moba6an" onClick={()=> goToNextStep()} >
+        <Button size="large" variant="moba6an" onClick={() => goToNextStep()}>
           Configurer mon profil !
         </Button>
       </div>
     </div>
-  )
-}
+  );
+};
+
+const ProfileStep2 = () => {
+  // State type
+  const [selectedFieldId, setSelectedFieldId] = useState<number | null>(null);
+
+  // Find selected field
+  const selectedField: Field | undefined = testData.find(
+    (field) => field.id === selectedFieldId
+  );
+  return (
+    <div className="flex flex-col gap-[3.75rem]">
+      <div className="text-center">
+        <h1 className={`${classes.headerTitle} font-unbounded`}>
+          Configuration de votre profil
+        </h1>
+        <p className={classes.headerText}>Choisissez vos compétences</p>
+      </div>
+      <div className="flex gap-[5rem]">
+        <div className="flex flex-col">
+          <ul className="flex flex-col gap-[0.625rem]">
+            {testData.map((field) => (
+              <li
+                key={field.id}
+                className="
+              bg-[#F9F7F3] rounded-[1.25rem] 
+              py-3 px-6 
+              text-[0.875rem] font-bold font-unbounded
+              cursor-pointer transition-all duration-200
+              min-w-[8rem] w-fit 
+               hover:-translate-y-1 hover:shadow-[0_4px_8px_rgba(0,0,0,0.1)]
+            "
+                onClick={() => setSelectedFieldId(field.id)}
+              >
+                {field.field}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="flex">
+          {selectedField ? (
+            <ul className="grid grid-cols-2 gap-[0.625rem] auto-rows-min">
+              {selectedField.domains.map((domain: Domain, index: number) => (
+                <li
+                  key={index}
+                  className={`
+                  bg-[#F9F7F3] rounded-[1.25rem] 
+                  py-3 px-6
+                  text-[0.875rem] font-bold font-unbounded
+                  cursor-pointer transition-all duration-200
+                  min-w-[8rem]
+                  hover:-translate-y-1 hover:shadow-[0_4px_8px_rgba(0,0,0,0.1)]
+                  w-full and add flex items-center justify-center
+                  ${domain.length > 15 ? 'col-span-2' : ''}
+                `}
+                >
+                  {domain}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-gray-400 italic">
+              Cliquez sur un domaine à gauche pour voir ses spécialités
+            </p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
