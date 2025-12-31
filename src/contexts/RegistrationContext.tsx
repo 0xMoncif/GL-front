@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState,useEffect } from 'react';
 import type { ReactNode } from 'react';
 
 interface RegistrationData {
@@ -62,15 +62,24 @@ interface RegistrationProviderProps {
 }
 
 export const RegistrationProvider = ({ children }: RegistrationProviderProps) => {
-  const [currentPhase, setCurrentPhase] = useState<'account' | 'profile'>('account');
-  const [currentStep, setCurrentStep] = useState(1);
-  const [registrationData, setRegistrationData] = useState<RegistrationData>({
-    email: '',
-    firstName: '',
-    lastName: '',
-    phone: '',
-    password: '',
-    schoolId: '',
+   const [currentPhase, setCurrentPhase] = useState<'account' | 'profile'>(() => {
+    const saved = localStorage.getItem('registrationPhase');
+    return (saved as 'account' | 'profile') || 'account';
+  });
+  const [currentStep, setCurrentStep] = useState(() => {
+    const saved = localStorage.getItem('registrationStep');
+    return saved ? parseInt(saved) : 1;
+  });
+   const [registrationData, setRegistrationData] = useState<RegistrationData>(() => {
+    const saved = localStorage.getItem('registrationData');
+    return saved ? JSON.parse(saved) : {
+      email: '',
+      firstName: '',
+      lastName: '',
+      phone: '',
+      password: '',
+      schoolId: '',
+    };
   });
 
   const getCurrentPhaseConfig = () => PHASE_CONFIG[currentPhase];
@@ -129,6 +138,19 @@ export const RegistrationProvider = ({ children }: RegistrationProviderProps) =>
         : phase === 'account' ? 100 : 0,
     };
   };
+
+
+useEffect(() => {
+  
+  localStorage.setItem('registrationData', JSON.stringify(registrationData));
+}, [registrationData]);
+
+
+useEffect(() => {
+  localStorage.setItem('registrationPhase', currentPhase);
+  localStorage.setItem('registrationStep', currentStep.toString());
+}, [currentPhase, currentStep]);
+
 
   return (
     <RegistrationContext.Provider

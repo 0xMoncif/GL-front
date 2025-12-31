@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { SignUpHeader } from "../sections/signUpHeader";
 import { Button } from "@components";
 import { ProgressBar } from "../layout/progressBar";
@@ -17,6 +18,7 @@ const classes = {
   headerContainer: "text-center mt-[2.2rem]",
   headerTitle: "text-[2.5rem] text-[#DCA934] font-extrabold",
   headerText: "text-[1.25rem] text-opacity-[60%] text-[#1F1F1F] font-red-hat",
+  subHeaderText :"text-[1.5rem] text-[#1F1F1F]" ,
 
   //form
   formContainer:
@@ -30,24 +32,38 @@ const classes = {
 };
 
 export const CreateAcconut = () => {
-  const { currentPhase, currentStep, registrationData } = useRegistration();
+  const navigate = useNavigate();
+  const { currentPhase, currentStep, registrationData,goToPrevStep } = useRegistration();
   useEffect(() => {
     console.log("🔄 Registration data changed:", registrationData);
   }, [registrationData]);
+  
   return (
     <div className={classes.container}>
-      <SignUpHeader navigationUrl="/Sign-up" />
+      <SignUpHeader onClick={()=>{
+        if(currentStep=== 1 && currentPhase==='account'){
+          navigate("/Sign-up");
+        }
+        else{
+          goToPrevStep();
+        }
+      }}/>
 
       <main className={classes.mainContainer}>
-        <header className={classes.headerContainer}>
+        {currentPhase === 'account' ? <header className={classes.headerContainer}>
           <h1 className={classes.headerTitle}>Créer un compte</h1>
           <p className={classes.headerText}>Vos informations personnelles</p>
-        </header>
+        </header> : null}
 
         <div className={classes.formContainer}>
           {currentPhase === "account" && currentStep === 1 && <AccountStep1 />}
           {currentPhase === "account" && currentStep === 2 && <AccountStep2 />}
           {currentPhase === "account" && currentStep === 3 && <AccountStep3 />}
+
+
+          {currentPhase === "profile" && currentStep === 1 && <ProfileStep1 />}
+          {currentPhase === "profile" && currentStep === 2 && <h1 className={classes.headerTitle}>Créer un compte</h1>}
+
         </div>
         <div className="flex justify-center gap-[1.25rem] mt-[5.25rem] mb-[2.5rem]">
           <ProgressBar content="Informations personnelles" phase="account" />
@@ -382,3 +398,23 @@ const AccountStep3 = () => {
     </form>
   );
 };
+
+const ProfileStep1 = ()=>{
+    const { registrationData,goToNextStep } = useRegistration();
+  return (
+    <div className="flex flex-col gap-[3.75rem] mt-[10rem] text-center">
+      <div>
+        <h1 className={`${classes.headerTitle} font-unbounded`}>Bienvenue {registrationData.firstName}!</h1>
+        <p className={`${classes.headerText} font-red-hat`}>Compte créé avec succès</p>
+      </div>
+      <div className="w-[37.2rem]">
+        <p className={classes.subHeaderText}>Votre compte a été créé avec succès ! Pour commencer à travailler, nous devons configurer votre profil.</p>
+      </div>
+      <div>
+        <Button size="large" variant="moba6an" onClick={()=> goToNextStep()} >
+          Configurer mon profil !
+        </Button>
+      </div>
+    </div>
+  )
+}

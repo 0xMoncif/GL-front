@@ -2,7 +2,7 @@ import logo from "@/assets/logo.svg";
 import { useNavigate } from "react-router-dom";
 
 interface SignUpHeaderProps {
-  navigationUrl: string;
+  onClick :()=>void;
 }
 
 const classes = {
@@ -17,7 +17,7 @@ const classes = {
     "transition-all duration-300 ease-out group-hover:scale-125 group-hover:mr-2",
 };
 
-export const SignUpHeader = ({navigationUrl} : SignUpHeaderProps) => {
+export const SignUpHeader = ({onClick} : SignUpHeaderProps) => {
     const navigate = useNavigate()
 
   return (
@@ -30,7 +30,7 @@ export const SignUpHeader = ({navigationUrl} : SignUpHeaderProps) => {
       </div>
 
       <div className={classes.returnContainer}>
-        <div className={classes.returnLink} onClick={() => navigate(navigationUrl)}>
+        <div className={classes.returnLink} onClick={() => onClick()}>
           <span className={classes.returnArrow}>←</span>
           <span>Retour</span>
         </div>

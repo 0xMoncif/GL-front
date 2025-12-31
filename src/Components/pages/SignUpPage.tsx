@@ -65,7 +65,7 @@ export const SignUpPage = () => {
 
   return (
     <div className={classes.container}>
-      <SignUpHeader navigationUrl= '/' />
+      <SignUpHeader onClick={()=> navigate('/')} />
 
       {/* Main content */}
       <main className="">

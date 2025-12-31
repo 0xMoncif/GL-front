@@ -13,9 +13,7 @@ function App() {
             path="/Create-Account"
             element={
               <RegistrationProvider>
-                
                   <CreateAcconut />
-                
               </RegistrationProvider>
             }
           />
