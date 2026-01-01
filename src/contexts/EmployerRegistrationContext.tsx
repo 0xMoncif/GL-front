@@ -13,7 +13,8 @@ interface EmployerRegistrationData {
   email: string;
   phone: string;
   password: string;
-  
+  city : string;
+  sector : string
   
   companyInfo?: EmployerProfileData;
   
@@ -81,6 +82,8 @@ export const EmployerRegistrationProvider = ({ children }: EmployerRegistrationP
       companyName: '',
       phone: '',
       password: '',
+      city : '',
+      sector : ''
     };
   });
 

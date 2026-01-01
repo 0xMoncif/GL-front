@@ -58,6 +58,7 @@ export const CreateEmployerAccount = ()=>{
                 <div className={classes.formContainer}>
                   {currentPhase === "account" && currentStep === 1 && <AccountStep1 />}
                   {currentPhase === "account" && currentStep === 2 && <AccountStep2 />}
+                  {currentPhase === "account" && currentStep === 3 && <AccountStep3 />}
                   
                 </div>
                 <div className="flex justify-center gap-[1.25rem] mt-[5.25rem] mb-[2.5rem]">
@@ -180,6 +181,54 @@ const AccountStep2 = () => {
         name="confirmed-password"
         required
         placeholder="Confirmer le mot de passe"
+        className={classes.largeInput}
+        style={{
+          color: "#1F1F1F",
+        }}
+      />
+      <button className={classes.button}>
+        Continuer
+      </button>
+    </form>
+  );
+};
+const AccountStep3 = () => {
+  const { goToNextStep, currentPhase, currentStep, updateData } =
+    useEmployerRegistration();
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+
+    const stepData = {
+      city: formData.get("City") as string,
+      secotr: formData.get("Sector") as string,
+    };
+    updateData(stepData);
+    goToNextStep();
+
+    console.log("Phase:", currentPhase, "Step:", currentStep);
+  };
+
+  return (
+    <form className={classes.form} onSubmit={handleSubmit}>
+      
+      <input
+        type="text"
+        name="City"
+        required
+        placeholder="Ville"
+        className={classes.largeInput}
+        style={{
+          color: "#1F1F1F",
+        }}
+      />
+      <input
+        type="text"
+        name="Sector"
+        required
+        placeholder="Secteur d’activité"
         className={classes.largeInput}
         style={{
           color: "#1F1F1F",
