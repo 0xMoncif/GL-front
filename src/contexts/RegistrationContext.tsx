@@ -1,6 +1,14 @@
 import { createContext, useContext, useState,useEffect } from 'react';
 import type { ReactNode } from 'react';
 
+type Domain = string;
+
+type Field = {
+  id: number;
+  field: string;
+  domains: Domain[];
+};
+
 interface RegistrationData {
   // Phase 1: Account Creation
   email: string;
@@ -13,7 +21,9 @@ interface RegistrationData {
   // Phase 2: Profile Configuration
   profileData?: {
     // i will add this later
-    bio?: string;
+    field?: Field;
+    bio? : string;
+    portfolio? : string;
   };
 }
 
@@ -52,7 +62,7 @@ const PHASE_CONFIG = {
     title: 'Création du compte',
   },
   profile: {
-    totalSteps: 3, // Change this based on your needs
+    totalSteps: 4, // Change this based on your needs
     title: 'Configuration du profil',
   },
 };

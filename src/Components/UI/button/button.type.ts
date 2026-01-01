@@ -9,6 +9,7 @@ export interface ButtonProps extends BasePropsWithChildren {
     onHover?: () => void;
     disabled?: boolean;
     type? : ButtonType;
+    form? : string
     variant : ButtonVariant;
     size: ButtonSize; 
 }

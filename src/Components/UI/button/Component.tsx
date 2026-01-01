@@ -9,6 +9,7 @@ export const Button = ({
   onClick,
   type= 'button',
   onHover,
+  form = '',
   className,
 }: ButtonProps) => {
   const baseButtonClasses: string = "rounded-2xl font-unbounded ";
@@ -33,6 +34,7 @@ export const Button = ({
       onMouseOver={onHover}
       disabled={disabled}
       type={type}
+      form={form}
     >
       {children}
     </button>
