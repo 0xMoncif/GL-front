@@ -5,8 +5,8 @@ type ButtonVariant = 'mo9a3ar' | 'moba6an' | 'mo9a3arWhite';
 type ButtonSize = 'small' | 'medium' | 'large'
 type ButtonType = 'button' | 'submit' | 'reset'
 export interface ButtonProps extends BasePropsWithChildren {
-    onClick?: () => void;
-    onHover?: () => void;
+    onClick?: React.MouseEventHandler<HTMLButtonElement>;
+    onHover?: React.MouseEventHandler<HTMLButtonElement>;
     disabled?: boolean;
     type? : ButtonType;
     form? : string

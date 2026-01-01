@@ -1,7 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { LandingPage, SignUpPage, CreateAcconut } from "@components";
+import {
+  LandingPage,
+  SignUpPage,
+  CreateStudentAcconut,
+  CreateEmployerAccount,
+} from "@components";
 import { RegistrationProvider } from "./contexts/RegistrationContext";
-// test
+import { EmployerRegistrationProvider } from "./contexts/EmployerRegistrationContext";
+
+
 function App() {
   return (
     <>
@@ -13,8 +20,16 @@ function App() {
             path="/Create-Account"
             element={
               <RegistrationProvider>
-                  <CreateAcconut />
+                <CreateStudentAcconut />
               </RegistrationProvider>
+            }
+          />
+          <Route
+            path="/Create-Employer-Account"
+            element={
+              <EmployerRegistrationProvider>
+                <CreateEmployerAccount />
+              </EmployerRegistrationProvider>
             }
           />
         </Routes>

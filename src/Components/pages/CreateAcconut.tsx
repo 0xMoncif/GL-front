@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { SignUpHeader } from "../sections/signUpHeader";
 import { Button } from "@components";
-import { ProgressBar } from "../layout/progressBar";
+import { StudentProgressBar } from "../layout/progressBar/StudentProgressBar";
 import { useRegistration } from "../../contexts/RegistrationContext";
 import defaultPic from '@assets/defaultPic.png'
 
@@ -12,6 +12,8 @@ const baseInputClass =
 const classes = {
   container: "min-h-screen font-unbounded",
 
+
+  button : 'rounded-2xl font-unbounded bg-[#DCA934] text-white  border-none w-[28.43rem] h-[4.375rem] text-[1.5rem] font-[800] hover:-translate-y-1.5 hover:shadow-[0_8px_4px_rgba(0,0,0,0.25)] transition-all duration-300 ease-in-out',
   // main
   mainContainer: "",
 
@@ -60,13 +62,11 @@ const testData: Field[] = [
   },
 ];
 
-export const CreateAcconut = () => {
+export const CreateStudentAcconut = () => {
   const navigate = useNavigate();
   const { currentPhase, currentStep, registrationData, goToPrevStep } =
     useRegistration();
-  useEffect(() => {
-    console.log("🔄 Registration data changed:", registrationData);
-  }, [registrationData]);
+  
 
   return (
     <div className={classes.container}>
@@ -99,8 +99,8 @@ export const CreateAcconut = () => {
           {currentPhase === "profile" && currentStep === 4 && <ProfileStep4 />}
         </div>
         <div className="flex justify-center gap-[1.25rem] mt-[5.25rem] mb-[2.5rem]">
-          <ProgressBar content="Informations personnelles" phase="account" />
-          <ProgressBar content="Configurer votre profil" phase="profile" />
+          <StudentProgressBar content="Informations personnelles" phase="account" />
+          <StudentProgressBar content="Configurer votre profil" phase="profile" />
         </div>
       </main>
     </div>
@@ -108,12 +108,15 @@ export const CreateAcconut = () => {
 };
 
 const AccountStep1 = () => {
-  const { goToNextStep, currentPhase, currentStep, updateData } =
+  const { goToNextStep, currentPhase, currentStep, updateData,registrationData } =
     useRegistration();
-
+  useEffect(() => {
+    console.log("🔄 Registration data changed:", registrationData);
+    console.log(goToNextStep)
+  }, [registrationData]);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    console.log("✅ Form submitted! handleSubmit called"); 
     const formData = new FormData(e.currentTarget);
     const stepData = {
       firstName: formData.get("firstName") as string,
@@ -160,9 +163,9 @@ const AccountStep1 = () => {
           color: "#1F1F1F",
         }}
       />
-      <Button variant="moba6an" size="large" type="submit">
+      <button className={classes.button}>
         Continuer
-      </Button>
+      </button>
     </form>
   );
 };
@@ -232,9 +235,9 @@ const AccountStep2 = () => {
           color: "#1F1F1F",
         }}
       />
-      <Button variant="moba6an" size="large" type="submit">
+      <button className={classes.button}>
         Continuer
-      </Button>
+      </button>
     </form>
   );
 };
@@ -424,9 +427,9 @@ const AccountStep3 = () => {
           isOpen ? "mt-[17rem]" : "mt-0"
         }`}
       >
-        <Button variant="moba6an" size="large" type="submit">
-          Continuer
-        </Button>
+        <button className={classes.button}>
+        Continuer
+      </button>
       </div>
     </form>
   );

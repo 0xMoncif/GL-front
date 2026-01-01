@@ -50,7 +50,7 @@ export const SignUpPage = () => {
         "Publier vos offres, gérer les candidatures, et cibler vos annonces.",
       image: employer,
       imageClasses: `${classes.image} ${classes.EmployerImage} `,
-      navigationUrl : '/'
+      navigationUrl : '/Create-Employer-Account'
     },
     {
       id: 2,

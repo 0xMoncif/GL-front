@@ -1,13 +1,12 @@
-import { useRegistration } from '../../../contexts/RegistrationContext';
-
+import { useEmployerRegistration } from '../../../contexts/EmployerRegistrationContext';
 interface ProgressBarProp {
     content : string;
-     phase: 'account' | 'profile';
+    phase: 'account' | 'profile';
 }
 
 
-export const ProgressBar = ({content ,phase} : ProgressBarProp) => {
-   const { getPhaseProgress } = useRegistration();
+export const EmployerProgressBar = ({content ,phase} : ProgressBarProp) => {
+   const { getPhaseProgress } = useEmployerRegistration();
   const progress = getPhaseProgress(phase);
   
   return (
@@ -17,7 +16,7 @@ export const ProgressBar = ({content ,phase} : ProgressBarProp) => {
       </div>
       
       {/* Progress bar */}
-      <div className="w-[18.75rem] h-[0.31rem] bg-[#1F1F1F] bg-opacity-[20%] rounded-full overflow-hidden">
+      <div className={`${phase === 'account' ? 'w-[28.13rem]' : 'w-[9.38rem]'} h-[0.31rem] bg-[#1F1F1F] bg-opacity-[20%] rounded-full overflow-hidden`}>
         <div 
           className="h-full bg-[#DCA934] transition-all duration-300 ease-out rounded-full"
           style={{ width: `${progress.percentage}%` }}

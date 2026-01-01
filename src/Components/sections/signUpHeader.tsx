@@ -6,7 +6,7 @@ interface SignUpHeaderProps {
 }
 
 const classes = {
-  logoContainer: "flex items-center gap-[1rem] pt-[1.0625rem] pl-[1.4375rem]",
+  logoContainer: "flex items-center gap-[1rem] pt-[1.0625rem] pl-[1.4375rem] cursor-pointer",
   logoText: "text-[1rem] font-extrabold ",
 
   // Return link styling
@@ -22,7 +22,7 @@ export const SignUpHeader = ({onClick} : SignUpHeaderProps) => {
 
   return (
     <>
-      <div className={classes.logoContainer}>
+      <div className={classes.logoContainer} onClick={()=> navigate('/')}>
         <img src={logo} alt="Logo" className="w-[2.44rem] h-[3.13rem]" />
         <div className={classes.logoText}>
           DZ <span className="text-[#DCA934] font-semibold">Stagiaire</span>
