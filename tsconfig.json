@@ -5,6 +5,7 @@
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
+    "types": ["node", "react", "react-dom"],
     "baseUrl": ".",  // Base directory for resolution
     "paths": {
       "@/*": ["src/*"],  // @ = src folder

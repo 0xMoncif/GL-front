@@ -1,6 +1,6 @@
 import { createContext, useContext, useState,useEffect } from 'react';
 import type { ReactNode } from 'react';
-
+import { authApi } from '@/api';
 type Domain = string;
 
 type Field = {
@@ -11,12 +11,13 @@ type Field = {
 
 interface RegistrationData {
   // Phase 1: Account Creation
+  user_type : 'student'
   email: string;
-  firstName: string;
-  lastName: string;
-  phone: string;
+  first_name: string;
+  last_name: string;
+  phone_number: string;
   password: string;
-  schoolId: string;
+  schoolId?: string;
   
   // Phase 2: Profile Configuration
   profileData?: {
@@ -43,7 +44,7 @@ interface RegistrationContextType {
   
   // Data management
   updateData: (data: Partial<RegistrationData>) => void;
-  submitRegistration: () => Promise<void>;
+  submitRegistration: () => Promise<{ success: boolean; error?: any; } | undefined>;
   
   // Progress info
   getPhaseProgress: (phase: 'account' | 'profile') => {
@@ -51,6 +52,11 @@ interface RegistrationContextType {
     totalSteps: number;
     percentage: number;
   };
+
+  // UI state
+  loading: boolean;
+  error: string | null;
+  clearError: () => void;
 }
 
 const RegistrationContext = createContext<RegistrationContextType | undefined>(undefined);
@@ -58,7 +64,7 @@ const RegistrationContext = createContext<RegistrationContextType | undefined>(u
 // Configuration
 const PHASE_CONFIG = {
   account: {
-    totalSteps: 3,
+    totalSteps: 2,
     title: 'Création du compte',
   },
   profile: {
@@ -83,14 +89,18 @@ export const RegistrationProvider = ({ children }: RegistrationProviderProps) =>
    const [registrationData, setRegistrationData] = useState<RegistrationData>(() => {
     const saved = localStorage.getItem('registrationData');
     return saved ? JSON.parse(saved) : {
+      user_type : 'student',
       email: '',
-      firstName: '',
-      lastName: '',
+      first_name: '',
+      last_name: '',
       phone: '',
       password: '',
       schoolId: '',
     };
   });
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const getCurrentPhaseConfig = () => PHASE_CONFIG[currentPhase];
   const getTotalSteps = () => getCurrentPhaseConfig().totalSteps;
@@ -130,10 +140,46 @@ export const RegistrationProvider = ({ children }: RegistrationProviderProps) =>
     setRegistrationData(prev => ({ ...prev, ...data }));
   };
 
+  const clearError = () => setError(null);
+
+
   const submitRegistration = async () => {
-    console.log('Submitting registration:', registrationData);
-    // API call here
-    // await api.register(registrationData);
+    setLoading(true);
+    setError(null);
+
+   
+
+    try{
+      const apiData: RegistrationData = {
+      user_type: 'student', 
+      email: registrationData.email,
+      password: registrationData.password,
+      phone_number: registrationData.phone_number || '',  
+      first_name: registrationData.first_name,
+      last_name: registrationData.last_name,
+    };
+
+    const response = await authApi.register(apiData);
+
+    localStorage.setItem('access_token', response.access);
+    localStorage.setItem('refresh_token', response.refresh);
+
+    setLoading(false);
+    return { success: true };
+    
+    }catch(err : any){
+    const errorMessage = err.response?.data?.error || 
+                        err.message || 
+                        'Registration failed';
+    alert(errorMessage);  
+    setError(errorMessage);
+    setLoading(false);
+    
+    return { 
+      success: false, 
+      error: errorMessage 
+    };
+    }
   };
 
   const getPhaseProgress = (phase: 'account' | 'profile') => {
@@ -175,6 +221,9 @@ useEffect(() => {
         updateData,
         submitRegistration,
         getPhaseProgress,
+        clearError,
+        loading,
+        error,
       }}
     >
       {children}

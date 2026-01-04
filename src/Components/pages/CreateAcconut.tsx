@@ -4,7 +4,8 @@ import { SignUpHeader } from "../sections/signUpHeader";
 import { Button } from "@components";
 import { StudentProgressBar } from "../layout/progressBar/StudentProgressBar";
 import { useRegistration } from "../../contexts/RegistrationContext";
-import defaultPic from '@assets/defaultPic.png'
+import defaultPic from "@assets/defaultPic.png";
+import { FaSpinner } from "react-icons/fa";
 
 const baseInputClass =
   "pl-[1.875rem] bg-[#F9F7F3] bg-opacity-[1%] rounded-[1.25rem] h-[4.38rem] border-[1px] border-[#1F1F1F] border-opacity-[10%] placeholder:text-[#1F1F1F] placeholder:opacity-[40%] cursor-text";
@@ -12,8 +13,8 @@ const baseInputClass =
 const classes = {
   container: "min-h-screen font-unbounded",
 
-
-  button : 'rounded-2xl font-unbounded bg-[#DCA934] text-white  border-none w-[28.43rem] h-[4.375rem] text-[1.5rem] font-[800] hover:-translate-y-1.5 hover:shadow-[0_8px_4px_rgba(0,0,0,0.25)] transition-all duration-300 ease-in-out',
+  button:
+    "rounded-2xl font-unbounded bg-[#DCA934] text-white  border-none w-[28.43rem] h-[4.375rem] text-[1.5rem] font-[800] hover:-translate-y-1.5 hover:shadow-[0_8px_4px_rgba(0,0,0,0.25)] transition-all duration-300 ease-in-out",
   // main
   mainContainer: "",
 
@@ -66,7 +67,6 @@ export const CreateStudentAcconut = () => {
   const navigate = useNavigate();
   const { currentPhase, currentStep, registrationData, goToPrevStep } =
     useRegistration();
-  
 
   return (
     <div className={classes.container}>
@@ -91,7 +91,7 @@ export const CreateStudentAcconut = () => {
         <div className={classes.formContainer}>
           {currentPhase === "account" && currentStep === 1 && <AccountStep1 />}
           {currentPhase === "account" && currentStep === 2 && <AccountStep2 />}
-          {currentPhase === "account" && currentStep === 3 && <AccountStep3 />}
+          {/*{currentPhase === "account" && currentStep === 3 && <AccountStep3 />}*/}
 
           {currentPhase === "profile" && currentStep === 1 && <ProfileStep1 />}
           {currentPhase === "profile" && currentStep === 2 && <ProfileStep2 />}
@@ -99,8 +99,14 @@ export const CreateStudentAcconut = () => {
           {currentPhase === "profile" && currentStep === 4 && <ProfileStep4 />}
         </div>
         <div className="flex justify-center gap-[1.25rem] mt-[5.25rem] mb-[2.5rem]">
-          <StudentProgressBar content="Informations personnelles" phase="account" />
-          <StudentProgressBar content="Configurer votre profil" phase="profile" />
+          <StudentProgressBar
+            content="Informations personnelles"
+            phase="account"
+          />
+          <StudentProgressBar
+            content="Configurer votre profil"
+            phase="profile"
+          />
         </div>
       </main>
     </div>
@@ -108,19 +114,24 @@ export const CreateStudentAcconut = () => {
 };
 
 const AccountStep1 = () => {
-  const { goToNextStep, currentPhase, currentStep, updateData,registrationData } =
-    useRegistration();
+  const {
+    goToNextStep,
+    currentPhase,
+    currentStep,
+    updateData,
+    registrationData,
+  } = useRegistration();
   useEffect(() => {
     console.log("🔄 Registration data changed:", registrationData);
-    console.log(goToNextStep)
+    console.log(goToNextStep);
   }, [registrationData]);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("✅ Form submitted! handleSubmit called"); 
+    console.log("✅ Form submitted! handleSubmit called");
     const formData = new FormData(e.currentTarget);
     const stepData = {
-      firstName: formData.get("firstName") as string,
-      lastName: formData.get("lastName") as string,
+      first_name: formData.get("firstName") as string,
+      last_name: formData.get("lastName") as string,
       email: formData.get("email") as string,
     };
     updateData(stepData);
@@ -163,18 +174,22 @@ const AccountStep1 = () => {
           color: "#1F1F1F",
         }}
       />
-      <button className={classes.button}>
-        Continuer
-      </button>
+      <button className={classes.button}>Continuer</button>
     </form>
   );
 };
 
 const AccountStep2 = () => {
-  const { goToNextStep, currentPhase, currentStep, updateData } =
-    useRegistration();
+  const {
+    goToNextStep,
+    currentPhase,
+    currentStep,
+    updateData,
+    submitRegistration,
+    loading,
+  } = useRegistration();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
@@ -189,7 +204,12 @@ const AccountStep2 = () => {
       password: formData.get("password") as string,
     };
     updateData(stepData);
-    goToNextStep();
+
+    const result = await submitRegistration();
+
+    if (result?.success) {
+      goToNextStep();
+    }
 
     console.log("Phase:", currentPhase, "Step:", currentStep);
   };
@@ -235,8 +255,25 @@ const AccountStep2 = () => {
           color: "#1F1F1F",
         }}
       />
-      <button className={classes.button}>
-        Continuer
+      <button
+        className={classes.button}
+        disabled={loading} // Disable button when loading
+        style={{
+          opacity: loading ? 0.7 : 1,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "8px",
+        }}
+      >
+        {loading ? (
+          <>
+            <FaSpinner className="animate-spin" />
+            Inscription en cours...
+          </>
+        ) : (
+          "Continuer"
+        )}
       </button>
     </form>
   );
@@ -427,9 +464,7 @@ const AccountStep3 = () => {
           isOpen ? "mt-[17rem]" : "mt-0"
         }`}
       >
-        <button className={classes.button}>
-        Continuer
-      </button>
+        <button className={classes.button}>Continuer</button>
       </div>
     </form>
   );
@@ -441,7 +476,7 @@ const ProfileStep1 = () => {
     <div className="flex flex-col gap-[3.75rem] mt-[10rem] text-center">
       <div>
         <h1 className={`${classes.headerTitle} font-unbounded`}>
-          Bienvenue {registrationData.firstName}!
+          Bienvenue {registrationData.first_name}!
         </h1>
         <p className={`${classes.headerText} font-red-hat`}>
           Compte créé avec succès
@@ -463,7 +498,8 @@ const ProfileStep1 = () => {
 };
 
 const ProfileStep2 = () => {
-   const { goToNextStep, currentPhase, currentStep, updateData } =useRegistration();
+  const { goToNextStep, currentPhase, currentStep, updateData } =
+    useRegistration();
   // State type
   const [selectedFieldId, setSelectedFieldId] = useState<number | null>(null);
   const [selectedDomains, setSelectedDomains] = useState<Domain[]>([]);
@@ -480,26 +516,25 @@ const ProfileStep2 = () => {
     );
   };
 
-  const handelSubmit = ()=>{
-    if(!selectedField){
-      alert('you must choose a field');
-      return
+  const handelSubmit = () => {
+    if (!selectedField) {
+      alert("you must choose a field");
+      return;
     }
     const stepData: Field = {
-      field : selectedField.field,
-      id : selectedField.id,
-      domains : selectedDomains
+      field: selectedField.field,
+      id: selectedField.id,
+      domains: selectedDomains,
     };
 
-    updateData({ 
-    profileData: {
-      field: stepData 
-    }
-  });
+    updateData({
+      profileData: {
+        field: stepData,
+      },
+    });
     goToNextStep();
 
     console.log("Phase:", currentPhase, "Step:", currentStep);
-    
   };
 
   return (
@@ -562,7 +597,7 @@ const ProfileStep2 = () => {
         </div>
       </div>
       <div className="flex items-center justify-center">
-        <Button variant="moba6an" size="large" onClick={()=> handelSubmit()}>
+        <Button variant="moba6an" size="large" onClick={() => handelSubmit()}>
           Continuer
         </Button>
       </div>
@@ -570,8 +605,8 @@ const ProfileStep2 = () => {
   );
 };
 
-const ProfileStep3 = ()=>{
-  const { registrationData, goToNextStep,updateData } = useRegistration();
+const ProfileStep3 = () => {
+  const { registrationData, goToNextStep, updateData } = useRegistration();
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -579,17 +614,14 @@ const ProfileStep3 = ()=>{
     const stepData = {
       bio: formData.get("bio") as string,
       portfolio: formData.get("portfolio") as string,
-      
     };
-    updateData({ 
-    profileData: {
-      bio: stepData.bio,
-      portfolio: stepData.portfolio
-    }
-  });
+    updateData({
+      profileData: {
+        bio: stepData.bio,
+        portfolio: stepData.portfolio,
+      },
+    });
     goToNextStep();
-
-    
   };
   return (
     <div className="flex flex-col gap-[3.75rem]">
@@ -603,15 +635,35 @@ const ProfileStep3 = ()=>{
         <div className="flex gap-[2.5rem]">
           <img src={defaultPic} alt="" />
           <div className="">
-            <h1 className="text-[2rem] font-bold font-unbounded">{registrationData.firstName}</h1>
-            <h1 className="text-[2rem] font-bold font-unbounded">{registrationData.lastName}</h1>
-            <h2 className="test-[1.875rem] font-red-hat">{registrationData.profileData?.field?.field}</h2>
+            <h1 className="text-[2rem] font-bold font-unbounded">
+              {registrationData.first_name}
+            </h1>
+            <h1 className="text-[2rem] font-bold font-unbounded">
+              {registrationData.last_name}
+            </h1>
+            <h2 className="test-[1.875rem] font-red-hat">
+              {registrationData.profileData?.field?.field}
+            </h2>
           </div>
         </div>
       </div>
-      <form id="profileForm" className="flex flex-col gap-[1.875rem] items-center justify-center" onSubmit={handleSubmit}>
-        <input type="text" name="bio" placeholder="À propos de moi…" className={`${classes.largeInput} h-[6.875rem]`} />
-        <input type="text" name="portfolio" placeholder="Lien du portfolio" className={`${classes.largeInput}`} />
+      <form
+        id="profileForm"
+        className="flex flex-col gap-[1.875rem] items-center justify-center"
+        onSubmit={handleSubmit}
+      >
+        <input
+          type="text"
+          name="bio"
+          placeholder="À propos de moi…"
+          className={`${classes.largeInput} h-[6.875rem]`}
+        />
+        <input
+          type="text"
+          name="portfolio"
+          placeholder="Lien du portfolio"
+          className={`${classes.largeInput}`}
+        />
       </form>
       <div className="flex justify-center">
         <Button size="large" variant="moba6an" type="submit" form="profileForm">
@@ -619,21 +671,24 @@ const ProfileStep3 = ()=>{
         </Button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-const ProfileStep4 = ()=>{
-  const {registrationData} = useRegistration();
+const ProfileStep4 = () => {
+  const { registrationData } = useRegistration();
   return (
     <div className="flex flex-col items-center justify-center gap-[3.75rem]">
       <div className="text-center">
         <h1 className={`${classes.headerTitle} font-unbounded`}>
-          Félicitations {registrationData.firstName} !
+          Félicitations {registrationData.first_name} !
         </h1>
         <p className={classes.headerText}>Bienvenue sur DZ-Stagiaire !</p>
       </div>
       <div className="w-[26.75rem] text-center">
-        <p>Profil prêt ! Explorez les offres de stage, postulez et démarrez votre parcours professionnel avec DZ-Stagiaire.</p>
+        <p>
+          Profil prêt ! Explorez les offres de stage, postulez et démarrez votre
+          parcours professionnel avec DZ-Stagiaire.
+        </p>
       </div>
       <div>
         <Button size="large" variant="moba6an">
@@ -641,5 +696,5 @@ const ProfileStep4 = ()=>{
         </Button>
       </div>
     </div>
-  )
-}
+  );
+};
