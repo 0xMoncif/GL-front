@@ -1,5 +1,6 @@
 import { SignUpHeader } from "../sections/signUpHeader"
 import { useNavigate } from "react-router-dom";
+import defaultPic from "@assets/defaultPic.png";
 import { EmployerProgressBar } from "../layout/progressBar/EmployerProgressBar";
 import {useEmployerRegistration} from '../../contexts/EmployerRegistrationContext'
 import { Button } from "../UI";
@@ -59,6 +60,9 @@ export const CreateEmployerAccount = ()=>{
                   {currentPhase === "account" && currentStep === 1 && <AccountStep1 />}
                   {currentPhase === "account" && currentStep === 2 && <AccountStep2 />}
                   {currentPhase === "account" && currentStep === 3 && <AccountStep3 />}
+
+                  {currentPhase === "profile" && currentStep === 1 && <ProfileStep1 />}
+                  {currentPhase === "profile" && currentStep === 2 && <ProfileStep2 />}
                   
                 </div>
                 <div className="flex justify-center gap-[1.25rem] mt-[5.25rem] mb-[2.5rem]">
@@ -203,7 +207,7 @@ const AccountStep3 = () => {
 
     const stepData = {
       city: formData.get("City") as string,
-      secotr: formData.get("Sector") as string,
+      sector: formData.get("Sector") as string,
     };
     updateData(stepData);
     goToNextStep();
@@ -238,5 +242,94 @@ const AccountStep3 = () => {
         Continuer
       </button>
     </form>
+  );
+};
+
+const ProfileStep1 = () => {
+  const { registrationData, goToNextStep } = useEmployerRegistration();
+  return (
+    <div className="flex flex-col gap-[3.75rem] mt-[10rem] text-center">
+      <div>
+        <h1 className={`${classes.headerTitle} font-unbounded`}>
+          Bienvenue {registrationData.companyName}!
+        </h1>
+        <p className={`${classes.headerText} font-red-hat`}>
+          Compte créé avec succès
+        </p>
+      </div>
+      <div className="w-[26.75rem]">
+        <p className={`${classes.subHeaderText}`}>
+          Pour commencer, veuillez compléter la
+          configuration de votre profil.
+        </p>
+      </div>
+      <div>
+        <Button size="large" variant="moba6an" onClick={() => goToNextStep()}>
+          Configurer mon profil !
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+const ProfileStep2 = () => {
+  const { registrationData, goToNextStep, updateData } = useEmployerRegistration();
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+    const stepData = {
+      bio: formData.get("bio") as string,
+      portfolio: formData.get("portfolio") as string,
+    };
+    
+    goToNextStep();
+  };
+  return (
+    <div className="flex flex-col gap-[3.75rem]">
+      <div className="text-center">
+        <h1 className={`${classes.headerTitle} font-unbounded`}>
+          Configuration de votre profil
+        </h1>
+        <p className={classes.headerText}>L’apparence de votre profil.</p>
+      </div>
+      <div className="flex flex-col items-center">
+        <div className="flex gap-[2.5rem]">
+          <img src={defaultPic} alt="" />
+          <div className="">
+            <h1 className="text-[2rem] font-bold font-unbounded">
+              {registrationData.companyName}
+            </h1>
+            
+            <h2 className="test-[1.875rem] font-red-hat">
+              {registrationData.sector}
+            </h2>
+          </div>
+        </div>
+      </div>
+      <form
+        id="profileForm"
+        className="flex flex-col gap-[1.875rem] items-center justify-center"
+        onSubmit={handleSubmit}
+      >
+        <input
+          type="text"
+          name="bio"
+          placeholder="À propos de moi…"
+          className={`${classes.largeInput} h-[6.875rem]`}
+        />
+        <input
+          type="text"
+          name="portfolio"
+          placeholder="Lien du site web officiel"
+          className={`${classes.largeInput}`}
+        />
+      </form>
+      <div className="flex justify-center">
+        <Button size="large" variant="moba6an" type="submit" form="profileForm">
+          Continuer
+        </Button>
+      </div>
+    </div>
   );
 };

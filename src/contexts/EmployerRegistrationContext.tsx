@@ -146,17 +146,17 @@ export const EmployerRegistrationProvider = ({ children }: EmployerRegistrationP
   };
 
   const getPhaseProgress = (phase: 'account' | 'profile') => {
-    const config = EMPLOYER_PHASE_CONFIG[phase];
-    const isCurrentPhase = phase === currentPhase;
-    
-    return {
-      currentStep: isCurrentPhase ? currentStep : 0,
-      totalSteps: config.totalSteps,
-      percentage: isCurrentPhase 
-        ? ((currentStep - 1) / (config.totalSteps - 1)) * 100
-        : 0,
-    };
+  const config = EMPLOYER_PHASE_CONFIG[phase];
+  const isCurrentPhase = phase === currentPhase;
+  
+  return {
+    currentStep: isCurrentPhase ? currentStep : (phase === 'account' ? config.totalSteps : 0),
+    totalSteps: config.totalSteps,
+    percentage: isCurrentPhase 
+      ? ((currentStep - 1) / (config.totalSteps - 1)) * 100
+      : phase === 'account' ? 100 : 0,  // Same logic as student context
   };
+};
 
   return (
     <EmployerRegistrationContext.Provider
