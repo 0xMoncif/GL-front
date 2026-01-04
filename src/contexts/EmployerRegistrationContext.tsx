@@ -1,23 +1,20 @@
 // contexts/EmployerRegistrationContext.tsx
 import { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
+import { authApi } from '@/api';
 
-interface EmployerProfileData {
-  website?: string;
-  bio?: string;
-}
+
 
 interface EmployerRegistrationData {
-  
-  companyName: string;
+  user_type : 'company',
+  company_name: string;
   email: string;
-  phone: string;
+  phone_number: string;
   password: string;
-  city : string;
-  sector : string
-  
-  companyInfo?: EmployerProfileData;
-  
+  city? : string;
+  sector? : string
+  website?: string;
+  bio?: string;
 }
 
 interface EmployerRegistrationContextType {
@@ -36,7 +33,7 @@ interface EmployerRegistrationContextType {
   
   // Data management
   updateData: (data: Partial<EmployerRegistrationData>) => void;
-  submitRegistration: () => Promise<void>;
+  submitRegistration: () => Promise<{ success: boolean; error?: any; } | undefined>;
   
   // Progress info
   getPhaseProgress: (phase: 'account' | 'profile') => {
@@ -44,13 +41,17 @@ interface EmployerRegistrationContextType {
     totalSteps: number;
     percentage: number;
   };
+  // UI states
+  loading: boolean;
+  error: string | null;
+  clearError: () => void;
 }
 
 const EmployerRegistrationContext = createContext<EmployerRegistrationContextType | undefined>(undefined);
 
 const EMPLOYER_PHASE_CONFIG = {
   account: {
-    totalSteps: 3, 
+    totalSteps: 2, 
     title: 'Création du compte',
   },
   profile: {
@@ -79,13 +80,16 @@ export const EmployerRegistrationProvider = ({ children }: EmployerRegistrationP
     const saved = localStorage.getItem('employerRegistrationData');
     return saved ? JSON.parse(saved) : {
       email: '',
-      companyName: '',
-      phone: '',
+      company_name: '',
+      phone_number: '',
       password: '',
       city : '',
       sector : ''
     };
   });
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Save to localStorage
   useEffect(() => {
@@ -138,12 +142,46 @@ export const EmployerRegistrationProvider = ({ children }: EmployerRegistrationP
   const updateData = (data: Partial<EmployerRegistrationData>) => {
     setRegistrationData(prev => ({ ...prev, ...data }));
   };
+  
+  const clearError = ()=> setError(null);
 
   const submitRegistration = async () => {
-    console.log('Submitting employer registration:', registrationData);
-    // API call here
-    // await api.registerEmployer(registrationData);
-  };
+      setLoading(true);
+      setError(null);
+  
+     
+  
+      try{
+        const apiData: EmployerRegistrationData = {
+        user_type: 'company', 
+        email: registrationData.email,
+        password: registrationData.password,
+        phone_number : registrationData.phone_number,
+        company_name : registrationData.company_name
+      };
+  
+      const response = await authApi.registerCompany(apiData);
+  
+      localStorage.setItem('access_token', response.access);
+      localStorage.setItem('refresh_token', response.refresh);
+  
+      setLoading(false);
+      return { success: true };
+      
+      }catch(err : any){
+      const errorMessage = err.response?.data?.error || 
+                          err.message || 
+                          'Registration failed';
+      alert(errorMessage);  
+      setError(errorMessage);
+      setLoading(false);
+      
+      return { 
+        success: false, 
+        error: errorMessage 
+      };
+      }
+    };
 
   const getPhaseProgress = (phase: 'account' | 'profile') => {
   const config = EMPLOYER_PHASE_CONFIG[phase];
@@ -171,6 +209,9 @@ export const EmployerRegistrationProvider = ({ children }: EmployerRegistrationP
         updateData,
         submitRegistration,
         getPhaseProgress,
+        loading,
+        error,
+        clearError,
       }}
     >
       {children}

@@ -93,7 +93,7 @@ export const RegistrationProvider = ({ children }: RegistrationProviderProps) =>
       email: '',
       first_name: '',
       last_name: '',
-      phone: '',
+      phone_number: '',
       password: '',
       schoolId: '',
     };
@@ -159,7 +159,7 @@ export const RegistrationProvider = ({ children }: RegistrationProviderProps) =>
       last_name: registrationData.last_name,
     };
 
-    const response = await authApi.register(apiData);
+    const response = await authApi.registerStudent(apiData);
 
     localStorage.setItem('access_token', response.access);
     localStorage.setItem('refresh_token', response.refresh);

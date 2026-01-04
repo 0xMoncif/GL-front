@@ -11,7 +11,6 @@ export interface RegisterCompanyData {
   user_type: 'company';
   email: string;
   password: string;
-  password2: string;
   phone_number?: string;
   company_name: string;
 }

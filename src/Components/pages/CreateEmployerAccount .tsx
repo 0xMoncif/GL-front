@@ -1,16 +1,18 @@
-import { SignUpHeader } from "../sections/signUpHeader"
+import { SignUpHeader } from "../sections/signUpHeader";
 import { useNavigate } from "react-router-dom";
 import defaultPic from "@assets/defaultPic.png";
 import { EmployerProgressBar } from "../layout/progressBar/EmployerProgressBar";
-import {useEmployerRegistration} from '../../contexts/EmployerRegistrationContext'
+import { useEmployerRegistration } from "../../contexts/EmployerRegistrationContext";
+import { FaSpinner } from "react-icons/fa";
 import { Button } from "../UI";
 const baseInputClass =
   "pl-[1.875rem] bg-[#F9F7F3] bg-opacity-[1%] rounded-[1.25rem] h-[4.38rem] border-[1px] border-[#1F1F1F] border-opacity-[10%] placeholder:text-[#1F1F1F] placeholder:opacity-[40%] cursor-text";
 const classes = {
   container: "min-h-screen font-unbounded",
 
-  button : 'rounded-2xl font-unbounded bg-[#DCA934] text-white  border-none w-[28.43rem] h-[4.375rem] text-[1.5rem] font-[800] hover:-translate-y-1.5 hover:shadow-[0_8px_4px_rgba(0,0,0,0.25)] transition-all duration-300 ease-in-out',
- 
+  button:
+    "rounded-2xl font-unbounded bg-[#DCA934] text-white  border-none w-[28.43rem] h-[4.375rem] text-[1.5rem] font-[800] hover:-translate-y-1.5 hover:shadow-[0_8px_4px_rgba(0,0,0,0.25)] transition-all duration-300 ease-in-out",
+
   // main
   mainContainer: "",
 
@@ -31,50 +33,50 @@ const classes = {
   phoneNumber: `${baseInputClass} w-[21.06rem]`,
 };
 
+export const CreateEmployerAccount = () => {
+  const { currentPhase, currentStep, goToPrevStep } = useEmployerRegistration();
+  const navigate = useNavigate();
+  return (
+    <div className={classes.container}>
+      <SignUpHeader
+        onClick={() => {
+          if (currentStep === 1 && currentPhase === "account") {
+            navigate("/Sign-up");
+          } else {
+            goToPrevStep();
+          }
+        }}
+      />
 
+      <main className={classes.mainContainer}>
+        {currentPhase === "account" ? (
+          <header className={classes.headerContainer}>
+            <h1 className={classes.headerTitle}>Créer un compte</h1>
+            <p className={classes.headerText}>
+              Les informations de votre entrepris
+            </p>
+          </header>
+        ) : null}
 
-export const CreateEmployerAccount = ()=>{
-    const {currentPhase,currentStep,goToPrevStep} = useEmployerRegistration();
-    const navigate = useNavigate()
-    return(
-        <div className={classes.container}>
-              <SignUpHeader
-                onClick={() => {
-                  if (currentStep === 1 && currentPhase === "account") {
-                    navigate("/Sign-up");
-                  } else {
-                    goToPrevStep();
-                  }
-                }}
-              />
-        
-              <main className={classes.mainContainer}>
-                {currentPhase === "account" ? (
-                  <header className={classes.headerContainer}>
-                    <h1 className={classes.headerTitle}>Créer un compte</h1>
-                    <p className={classes.headerText}>Les informations de votre entrepris</p>
-                  </header>
-                ) : null}
-        
-                <div className={classes.formContainer}>
-                  {currentPhase === "account" && currentStep === 1 && <AccountStep1 />}
-                  {currentPhase === "account" && currentStep === 2 && <AccountStep2 />}
-                  {currentPhase === "account" && currentStep === 3 && <AccountStep3 />}
+        <div className={classes.formContainer}>
+          {currentPhase === "account" && currentStep === 1 && <AccountStep1 />}
+          {currentPhase === "account" && currentStep === 2 && <AccountStep2 />}
+          {/*{currentPhase === "account" && currentStep === 3 && <AccountStep3 />}*/}
 
-                  {currentPhase === "profile" && currentStep === 1 && <ProfileStep1 />}
-                  {currentPhase === "profile" && currentStep === 2 && <ProfileStep2 />}
-                  
-                </div>
-                <div className="flex justify-center gap-[1.25rem] mt-[5.25rem] mb-[2.5rem]">
-                  <EmployerProgressBar content="Les informations de l’entreprise" phase="account"  />
-                  <EmployerProgressBar content="Configurer le profil" phase="profile"  />
-                </div>
-              </main>
-            </div>
-        
-    )
-}
-
+          {currentPhase === "profile" && currentStep === 1 && <ProfileStep1 />}
+          {currentPhase === "profile" && currentStep === 2 && <ProfileStep2 />}
+        </div>
+        <div className="flex justify-center gap-[1.25rem] mt-[5.25rem] mb-[2.5rem]">
+          <EmployerProgressBar
+            content="Les informations de l’entreprise"
+            phase="account"
+          />
+          <EmployerProgressBar content="Configurer le profil" phase="profile" />
+        </div>
+      </main>
+    </div>
+  );
+};
 
 const AccountStep1 = () => {
   const { goToNextStep, currentPhase, currentStep, updateData } =
@@ -85,28 +87,28 @@ const AccountStep1 = () => {
 
     const formData = new FormData(e.currentTarget);
     const stepData = {
-      companyName : formData.get('companyName') as string,
-      email : formData.get('email') as string
-    }
+      company_name: formData.get("companyName") as string,
+      email: formData.get("email") as string,
+    };
     updateData(stepData);
     goToNextStep();
- 
+
     console.log("Phase:", currentPhase, "Step:", currentStep);
   };
 
   return (
     <form className={classes.form} onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="companyName"
-          required
-          className={classes.largeInput}
-          placeholder="Nom"
-          style={{
-            color: "#1F1F1F",
-          }}
-        />
-      
+      <input
+        type="text"
+        name="companyName"
+        required
+        className={classes.largeInput}
+        placeholder="Nom"
+        style={{
+          color: "#1F1F1F",
+        }}
+      />
+
       <input
         type="email"
         name="email"
@@ -117,19 +119,22 @@ const AccountStep1 = () => {
           color: "#1F1F1F",
         }}
       />
-      <button className={classes.button}>
-        Continuer
-      </button>
+      <button className={classes.button}>Continuer</button>
     </form>
   );
 };
 
-
 const AccountStep2 = () => {
-  const { goToNextStep, currentPhase, currentStep, updateData } =
-    useEmployerRegistration();
+  const {
+    goToNextStep,
+    currentPhase,
+    currentStep,
+    updateData,
+    submitRegistration,
+    loading,
+  } = useEmployerRegistration();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
@@ -140,11 +145,16 @@ const AccountStep2 = () => {
       return;
     }
     const stepData = {
-      phone: formData.get("phone") as string,
+      phone_number: formData.get("phone_number") as string,
       password: formData.get("password") as string,
     };
     updateData(stepData);
-    goToNextStep();
+
+    const result = await submitRegistration();
+
+    if (result?.success) {
+      goToNextStep();
+    }
 
     console.log("Phase:", currentPhase, "Step:", currentStep);
   };
@@ -161,7 +171,7 @@ const AccountStep2 = () => {
         />
         <input
           type="tel"
-          name="phone"
+          name="phone_number"
           required
           className={classes.phoneNumber}
           placeholder="Numéro de téléphone"
@@ -190,8 +200,25 @@ const AccountStep2 = () => {
           color: "#1F1F1F",
         }}
       />
-      <button className={classes.button}>
-        Continuer
+      <button
+        className={classes.button}
+        disabled={loading} // Disable button when loading
+        style={{
+          opacity: loading ? 0.7 : 1,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "8px",
+        }}
+      >
+        {loading ? (
+          <>
+            <FaSpinner className="animate-spin" />
+            Inscription en cours...
+          </>
+        ) : (
+          "Continuer"
+        )}
       </button>
     </form>
   );
@@ -217,7 +244,6 @@ const AccountStep3 = () => {
 
   return (
     <form className={classes.form} onSubmit={handleSubmit}>
-      
       <input
         type="text"
         name="City"
@@ -238,9 +264,7 @@ const AccountStep3 = () => {
           color: "#1F1F1F",
         }}
       />
-      <button className={classes.button}>
-        Continuer
-      </button>
+      <button className={classes.button}>Continuer</button>
     </form>
   );
 };
@@ -251,7 +275,7 @@ const ProfileStep1 = () => {
     <div className="flex flex-col gap-[3.75rem] mt-[10rem] text-center">
       <div>
         <h1 className={`${classes.headerTitle} font-unbounded`}>
-          Bienvenue {registrationData.companyName}!
+          Bienvenue {registrationData.company_name}!
         </h1>
         <p className={`${classes.headerText} font-red-hat`}>
           Compte créé avec succès
@@ -259,8 +283,7 @@ const ProfileStep1 = () => {
       </div>
       <div className="w-[26.75rem]">
         <p className={`${classes.subHeaderText}`}>
-          Pour commencer, veuillez compléter la
-          configuration de votre profil.
+          Pour commencer, veuillez compléter la configuration de votre profil.
         </p>
       </div>
       <div>
@@ -273,7 +296,8 @@ const ProfileStep1 = () => {
 };
 
 const ProfileStep2 = () => {
-  const { registrationData, goToNextStep, updateData } = useEmployerRegistration();
+  const { registrationData, goToNextStep, updateData } =
+    useEmployerRegistration();
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -282,7 +306,7 @@ const ProfileStep2 = () => {
       bio: formData.get("bio") as string,
       portfolio: formData.get("portfolio") as string,
     };
-    
+
     goToNextStep();
   };
   return (
@@ -298,9 +322,9 @@ const ProfileStep2 = () => {
           <img src={defaultPic} alt="" />
           <div className="">
             <h1 className="text-[2rem] font-bold font-unbounded">
-              {registrationData.companyName}
+              {registrationData.company_name}
             </h1>
-            
+
             <h2 className="test-[1.875rem] font-red-hat">
               {registrationData.sector}
             </h2>
