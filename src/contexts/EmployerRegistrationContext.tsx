@@ -12,7 +12,7 @@ interface EmployerRegistrationData {
   phone_number: string;
   password: string;
   city? : string;
-  sector? : string
+  idustry? : string
   website?: string;
   bio?: string;
 }
@@ -51,7 +51,7 @@ const EmployerRegistrationContext = createContext<EmployerRegistrationContextTyp
 
 const EMPLOYER_PHASE_CONFIG = {
   account: {
-    totalSteps: 2, 
+    totalSteps: 3, 
     title: 'Création du compte',
   },
   profile: {
@@ -84,7 +84,7 @@ export const EmployerRegistrationProvider = ({ children }: EmployerRegistrationP
       phone_number: '',
       password: '',
       city : '',
-      sector : ''
+      idustry : ''
     };
   });
 
@@ -157,7 +157,9 @@ export const EmployerRegistrationProvider = ({ children }: EmployerRegistrationP
         email: registrationData.email,
         password: registrationData.password,
         phone_number : registrationData.phone_number,
-        company_name : registrationData.company_name
+        company_name : registrationData.company_name,
+        idustry : registrationData.idustry,
+        city : registrationData.city
       };
   
       const response = await authApi.registerCompany(apiData);

@@ -61,7 +61,7 @@ export const CreateEmployerAccount = () => {
         <div className={classes.formContainer}>
           {currentPhase === "account" && currentStep === 1 && <AccountStep1 />}
           {currentPhase === "account" && currentStep === 2 && <AccountStep2 />}
-          {/*{currentPhase === "account" && currentStep === 3 && <AccountStep3 />}*/}
+          {currentPhase === "account" && currentStep === 3 && <AccountStep3 />}
 
           {currentPhase === "profile" && currentStep === 1 && <ProfileStep1 />}
           {currentPhase === "profile" && currentStep === 2 && <ProfileStep2 />}
@@ -125,14 +125,8 @@ const AccountStep1 = () => {
 };
 
 const AccountStep2 = () => {
-  const {
-    goToNextStep,
-    currentPhase,
-    currentStep,
-    updateData,
-    submitRegistration,
-    loading,
-  } = useEmployerRegistration();
+  const { goToNextStep, currentPhase, currentStep, updateData } =
+    useEmployerRegistration();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -150,11 +144,7 @@ const AccountStep2 = () => {
     };
     updateData(stepData);
 
-    const result = await submitRegistration();
-
-    if (result?.success) {
-      goToNextStep();
-    }
+    goToNextStep();
 
     console.log("Phase:", currentPhase, "Step:", currentStep);
   };
@@ -200,6 +190,62 @@ const AccountStep2 = () => {
           color: "#1F1F1F",
         }}
       />
+      <button className={classes.button}>Continuer</button>
+    </form>
+  );
+};
+const AccountStep3 = () => {
+  const {
+    goToNextStep,
+    currentPhase,
+    currentStep,
+    updateData,
+    submitRegistration,
+    loading,
+  } = useEmployerRegistration();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+
+    const stepData = {
+      city: formData.get("city") as string,
+      idustry: formData.get("idustry") as string,
+    };
+    updateData(stepData);
+
+    const result = await submitRegistration();
+
+    if (result?.success) {
+      goToNextStep();
+    }
+
+    console.log("Phase:", currentPhase, "Step:", currentStep);
+  };
+
+  return (
+    <form className={classes.form} onSubmit={handleSubmit}>
+      <input
+        type="text"
+        name="city"
+        required
+        placeholder="Ville"
+        className={classes.largeInput}
+        style={{
+          color: "#1F1F1F",
+        }}
+      />
+      <input
+        type="text"
+        name="idustry"
+        required
+        placeholder="Secteur d’activité"
+        className={classes.largeInput}
+        style={{
+          color: "#1F1F1F",
+        }}
+      />
       <button
         className={classes.button}
         disabled={loading} // Disable button when loading
@@ -220,51 +266,6 @@ const AccountStep2 = () => {
           "Continuer"
         )}
       </button>
-    </form>
-  );
-};
-const AccountStep3 = () => {
-  const { goToNextStep, currentPhase, currentStep, updateData } =
-    useEmployerRegistration();
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const formData = new FormData(e.currentTarget);
-
-    const stepData = {
-      city: formData.get("City") as string,
-      sector: formData.get("Sector") as string,
-    };
-    updateData(stepData);
-    goToNextStep();
-
-    console.log("Phase:", currentPhase, "Step:", currentStep);
-  };
-
-  return (
-    <form className={classes.form} onSubmit={handleSubmit}>
-      <input
-        type="text"
-        name="City"
-        required
-        placeholder="Ville"
-        className={classes.largeInput}
-        style={{
-          color: "#1F1F1F",
-        }}
-      />
-      <input
-        type="text"
-        name="Sector"
-        required
-        placeholder="Secteur d’activité"
-        className={classes.largeInput}
-        style={{
-          color: "#1F1F1F",
-        }}
-      />
-      <button className={classes.button}>Continuer</button>
     </form>
   );
 };
@@ -326,7 +327,7 @@ const ProfileStep2 = () => {
             </h1>
 
             <h2 className="test-[1.875rem] font-red-hat">
-              {registrationData.sector}
+              {registrationData.idustry}
             </h2>
           </div>
         </div>
