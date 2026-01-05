@@ -7,7 +7,7 @@ import {
 } from "@components";
 import { RegistrationProvider } from "./contexts/RegistrationContext";
 import { EmployerRegistrationProvider } from "./contexts/EmployerRegistrationContext";
-
+import { LoginPage } from "@components";
 
 function App() {
   return (
@@ -32,6 +32,7 @@ function App() {
               </EmployerRegistrationProvider>
             }
           />
+          <Route path="/Login" element={<LoginPage />} />
         </Routes>
       </Router>
     </>

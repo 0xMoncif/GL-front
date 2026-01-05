@@ -42,7 +42,7 @@ export const NavBar = () => {
       </div>
 
       <div className="flex gap-[1.25rem] ">
-        <Button variant="mo9a3ar" size="small" disabled={false}>
+        <Button variant="mo9a3ar" size="small" disabled={false} onClick={()=> navigate('/Login')}>
           Log in
         </Button>
         <Button variant="moba6an" size="small" onClick={()=>navigate('/Sign-up') } disabled={false} className="shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
